@@ -1,0 +1,8 @@
+{:deps {org.clojure/clojure {:mvn/version "1.11.1"}
+        org.clojure/math.combinatorics {:mvn/version "0.1.6"}
+        }
+ :paths ["src" "test"]
+ :aliases
+{:rcf {:extra-paths ["dev"]
+       :extra-deps {com.hyperfiddle/rcf {:mvn/version "20220926-202227"}}}}
+}
