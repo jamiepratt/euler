@@ -1,6 +1,7 @@
 (ns jamiep.euler549-v8
   (:require [hyperfiddle.rcf :refer [tests]]
-            [portal.console :as c]))
+            [portal.console :as c]
+            [jamiep.euler549-v4 :as v4]))
 
 (defn factorial
   "n!"
@@ -64,33 +65,34 @@
  (increase-m 2 2 3) := 4
  (increase-m 2 2 4) := 6)
 
-(defn- next-max-p [m-series p n]
-  (loop [p' p]
+(defn- next-max-p [m-series current-p n]
+  (loop [next-p current-p]
     (cond
-      (>= p' n) nil
-      (zero? (aget m-series p')) p'
-      :else (recur (inc p')))))
+      (>= next-p n) nil
+      (zero? (aget m-series next-p)) next-p
+      :else (recur (inc next-p)))))
 
-(defn- remove-all-powers-of-p [u p]
-  (loop [u' u]
-    (if (zero? (mod u' p))
-      (recur (quot u' p))
-      u')))
+(defn- remove-all-powers-of-p [current-u p]
+  (loop [next-u current-u]
+    (if (zero? (mod next-u p))
+      (recur (quot next-u p))
+      next-u)))
 
-(defn- next-u-p-and-power [powers-of-primes u p max-p n]
+(defn- u-p-and-power
+  "Returns new `u`, `p` that was just mutliplied by and `power` of `p` in `u`."
+  [powers-of-primes u p max-p n]
   (loop [u'  u
          p' p]
-    (c/log {:p' p' :u' u'})
     (if (> p' max-p)
       nil ; need to find a new prime
       (let [power (aget powers-of-primes p')
             u-times-p' (* u' p')]
         (if (neg? power) ; skip non primes
           (recur u' (inc p'))
-          (if (< u-times-p' n) ; next power of this prime
+          (if (< u-times-p' n)
             (do
               (aset powers-of-primes p' (inc power))
-              [u-times-p' 2])
+              [u-times-p' p' (inc power)])
             (do (aset powers-of-primes p' 0) ; next prime power
                 (recur (remove-all-powers-of-p u' p') (inc p')))))))))
 
@@ -98,52 +100,95 @@
  (def n 26)
  (def powers-of-primes (int-array n -1))
  (aset powers-of-primes 2 0)
- (next-u-p-and-power powers-of-primes 1 2 2 n) := [2 2]
+ (subvec (vec powers-of-primes) 0 6) := [-1 -1 0 -1 -1 -1]
+ (u-p-and-power powers-of-primes 1 2 2 n) := [2 2 1]
  (subvec (vec powers-of-primes) 0 6) := [-1 -1 1 -1 -1 -1]
- (next-u-p-and-power powers-of-primes 2 2 2 n) := [4 2]
+ (u-p-and-power powers-of-primes 2 2 2 n) := [4 2 2]
  (subvec (vec powers-of-primes) 0 6) := [-1 -1 2 -1 -1 -1]
- (next-u-p-and-power powers-of-primes 4 2 2 n) := [8 2]
+ (u-p-and-power powers-of-primes 4 2 2 n) := [8 2 3]
  (subvec (vec powers-of-primes) 0 6) := [-1 -1 3 -1 -1 -1]
- (next-u-p-and-power powers-of-primes 8 2 2 n) := [16 2]
+ (u-p-and-power powers-of-primes 8 2 2 n) := [16 2 4]
  (subvec (vec powers-of-primes) 0 6) := [-1 -1 4 -1 -1 -1]
- (next-u-p-and-power powers-of-primes 16 2 2 n) := nil
+ (u-p-and-power powers-of-primes 16 2 2 n) := nil
  (subvec (vec powers-of-primes) 0 6) := [-1 -1 0 -1 -1 -1]
  (aset powers-of-primes 3 0)
- (next-u-p-and-power powers-of-primes 1 3 3 n) := [3 2]
+ (subvec (vec powers-of-primes) 0 6) := [-1 -1 0 0 -1 -1]
+ (u-p-and-power powers-of-primes 1 3 3 n) := [3 3 1]
  (subvec (vec powers-of-primes) 0 6) := [-1 -1 0 1 -1 -1]
- (next-u-p-and-power powers-of-primes 3 2 3 n) := [6 2]
+ (u-p-and-power powers-of-primes 3 2 3 n) := [6 2 1]
  (subvec (vec powers-of-primes) 0 6) := [-1 -1 1 1 -1 -1]
-(next-u-p-and-power powers-of-primes 6 2 3 n) := [12 2]
+ (u-p-and-power powers-of-primes 6 2 3 n) := [12 2 2]
+ (subvec (vec powers-of-primes) 0 6) := [-1 -1 2 1 -1 -1]
+ (u-p-and-power powers-of-primes 12 2 3 n) := [24 2 3]
  (subvec (vec powers-of-primes) 0 6) := [-1 -1 3 1 -1 -1]
-(next-u-p-and-power powers-of-primes 12 2 3 n) := [24 2]
- (next-u-p-and-power powers-of-primes 24 2 3 n) := [9 2]
- (next-u-p-and-power powers-of-primes 18 2 3 n) := nil
- ,)
+ (u-p-and-power powers-of-primes 24 2 3 n) := [9 3 2]
+ (subvec (vec powers-of-primes) 0 6) := [-1 -1 0 2 -1 -1]
+ (u-p-and-power powers-of-primes 9 2 3 n) := [18 2 1]
+ (subvec (vec powers-of-primes) 0 6) := [-1 -1 1 2 -1 -1]
+ (u-p-and-power powers-of-primes 18 2 3 n) := nil)
 
+(defn m-series [to-n]
+  (let [n (inc to-n)
+        m-series (int-array n 0)
+        powers   (int-array n -1)]
+    (aset powers 2 0)
+    (loop [u 1
+           last-m 1
+           p 2
+           max-p 2]
+      (if-let [[next-u next-p power] (u-p-and-power powers u p max-p n)]
+        (let [m (increase-m last-m next-p power)]
+          (aset m-series next-u m)
+          (recur next-u m 2 max-p))
+        (if-let [found-prime (next-max-p m-series max-p n)] 
+          (do
+            (aset powers found-prime 0)
+            (aset m-series found-prime found-prime)
+            (recur 1 found-prime found-prime found-prime))
+          m-series)))))
 
-#_(defn- next-prime-series
-  "Given a boolean matrix take all the indexes where the value is true 
-   and less than or equal max-p
-   and iterate upwards through all the prodcuts of those primes with max-p."
-  [powers-of-primes m-series n max-p]
-  (loop [u-series [] ;series of products of combinations
-         u max-p
-         last-m 0
-         power 1]
-    (aset m-series u (increase-m last-m max-p power))
-    (let [next-u (* u max-p)]
-      (cond
-        (< next-u n)
-        ;continue through powers of p 
-        (recur multipliers' (conj u-series u) next-u last-m (inc power))
-        (seq multipliers')
-        (recur (rest multipliers')
-               (conj u-series u)
-               (* max-p (first multipliers'))
-               (aget m-series (first multipliers'))
-               1)
-        :else
-        (concat multipliers (conj u-series u))))))
+(let [a (subvec (vec (m-series 100)) 2)
+      b (v4/seq-of-smallest-m-till-p 100)]
+ (doseq [x (range 0 99)] 
+   (when (not= (get a x) (nth b x))
+     (println (str "a and b not the same at " (+ x 2) " a= " (get a x) " and b = " (nth b x))))))
+ (tests 
+  (subvec (vec (m-series 100)) 2) := (v4/seq-of-smallest-m-till-p 100))
+
+(defn sum-of-m-series [to-n]
+  (let [m-series (m-series to-n)]
+    (areduce m-series i ret 0
+                   (+ ret (aget m-series i)))))
+
+(tests
+ (sum-of-m-series 2) := 2
+ (sum-of-m-series 3) := 5
+ (sum-of-m-series 25) := 187
+ (sum-of-m-series 100) := 2012)
+
+;; (defn- next-prime-series
+;;   "Given a boolean matrix take all the indexes where the value is true 
+;;    and less than or equal max-p
+;;    and iterate upwards through all the prodcuts of those primes with max-p."
+;;   [powers-of-primes m-series n max-p]
+;;   (loop [u-series [] ;series of products of combinations
+;;          u max-p
+;;          last-m 0
+;;          power 1]
+;;     (aset m-series u (increase-m last-m max-p power))
+;;     (let [next-u (* u max-p)]
+;;       (cond
+;;         (< next-u n)
+;;         ;continue through powers of p 
+;;         (recur multipliers' (conj u-series u) next-u last-m (inc power))
+;;         (seq multipliers')
+;;         (recur (rest multipliers')
+;;                (conj u-series u)
+;;                (* max-p (first multipliers'))
+;;                (aget m-series (first multipliers'))
+;;                1)
+;;         :else
+;;         (concat multipliers (conj u-series u))))))
 
 #_(tests
  (def n 26)
