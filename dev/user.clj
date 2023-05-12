@@ -1,15 +1,17 @@
-(ns user ; user ns is loaded by REPL startup
-  (:require [hyperfiddle.rcf]
-            #_[portal.api :as p]))
+(ns user) ; user ns is loaded by REPL startup
 
+(println "Evaluating dev/user.clj")
+
+(require '[portal.api :as portal])
+(defonce p
+  (let [tmp (portal/open)]
+    (add-tap #'portal/submit)
+    tmp))
+
+(require '[hyperfiddle.rcf])
 (hyperfiddle.rcf/enable!)
 
-(comment 
-(def p (p/open))
 
-(add-tap #'p/submit)
-
-(tap> :hello))
 
 (comment
   ;; for node and jvm

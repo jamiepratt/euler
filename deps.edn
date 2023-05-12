@@ -1,8 +1,10 @@
 {:deps {org.clojure/clojure {:mvn/version "1.11.1"}
-        org.clojure/math.combinatorics {:mvn/version "0.1.6"}
-        }
+        org.clojure/math.combinatorics {:mvn/version "0.1.6"}}
  :paths ["src" "test"]
  :aliases
-{:rcf {:extra-paths ["dev"]
-       :extra-deps {com.hyperfiddle/rcf {:mvn/version "20220926-202227"}}}}
-}
+ {:dev {:extra-paths ["dev"]
+        :extra-deps {com.hyperfiddle/rcf {:mvn/version "20220926-202227"}}}
+  :portal {:extra-deps {djblue/portal {:mvn/version "RELEASE"}}}
+;;   :criterium {:extra-deps {criterium/criterium {:mvn/version "0.4.6"}}
+;;               :extra-paths ["dev"]}
+  }}
