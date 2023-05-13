@@ -21,6 +21,14 @@
         (persistent! factors)
         (recur (quot to-factorise factor) (conj! factors factor))))))
 
+; unfortunately this seems to be slower.
+#_(defn prime-factors-of [pfs x]
+  (let [quotients (->> (iterate #(/ % (pfs %)) x)
+                       (take-while #(not= % 1)))]
+    (into [(last quotients)]
+          (map (partial apply /)
+               (partition 2 1 quotients)))))
+
 (defn smallest-m-for-power-of-factor
   "Find m where m! is divisible by pf ^ power.
   m! is made up of factors 1..m but we are only interested in those factors that are multiples of pf."
@@ -38,10 +46,7 @@
 
 (defn transduce-pfs-to-smallest-m-till [p]
   (let [pfs (a-prime-factor-for-all-to p)]
-    (comp
-     (map (partial prime-factors-of pfs))
-     (map frequencies)
-     (map smallest-m-for-primes))))
+    (map (comp smallest-m-for-primes frequencies (partial prime-factors-of pfs)))))
 
 (defn seq-of-smallest-m-till [p]
   (transduce (transduce-pfs-to-smallest-m-till p) conj (range 2 (inc p))))
@@ -58,13 +63,5 @@
                  (println (time (sum-of-smallest-m-till p))))
               (range 2 9))))
 
-;(defn -main [& args]
-;  (doall (map #(let [p (x-to-power-n 10 %)]
-;                 (do (println "sum of prime factor series to " p)
-;                     (println (time (seq-of-smallest-m-till-p p)))))
-;              (range 2 8))))
 
-;(defn -main [& args]
-;  (println (time (apply + (sum-of-smallest-m-till-p (int 1e2))))))
-
-(time (sum-of-smallest-m-till (int (Math/pow 10 6))))
+#_(time (sum-of-smallest-m-till (int (Math/pow 10 6))))
