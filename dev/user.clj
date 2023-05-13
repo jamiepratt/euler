@@ -3,10 +3,10 @@
 (println "Evaluating dev/user.clj")
 
 (require '[portal.api :as portal])
-(defonce p
-  (let [tmp (portal/open)]
-    (add-tap #'portal/submit)
-    tmp))
+(when-not (resolve 'p)
+  (println "Opening portal window.")
+  (def p (portal/open))
+  (add-tap #'portal/submit))
 
 (require '[hyperfiddle.rcf])
 (hyperfiddle.rcf/enable!)
