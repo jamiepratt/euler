@@ -99,6 +99,6 @@
  (drop 19 (vec (least-m-to 40))) := [7 11 23 4 10 13 9 7 29 5 31 8 11 17 7 6 37 19 13 5]
  (drop 39 (vec (least-m-to 60))) := [41 7 43 11 6 23 47 6 14 10 17 13 53 9 11 7 19 29 59 5]
  (drop 59 (vec (least-m-to 80))) := '(61 31 7 8 13 11 67 17 23 7 71 6 73 37 10 19 11 13 79 6)
- (vec (least-m-to 200)) := (v4/seq-of-smallest-m-till-p 200)
+ (vec (least-m-to 200)) := (v4/seq-of-smallest-m-till 200)
  )
 nil

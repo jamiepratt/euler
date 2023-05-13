@@ -148,12 +148,12 @@
           m-series)))))
 
 (let [a (subvec (vec (m-series 100)) 2)
-      b (v4/seq-of-smallest-m-till-p 100)]
+      b (v4/seq-of-smallest-m-till 100)]
  (doseq [x (range 0 99)] 
    (when (not= (get a x) (nth b x))
      (println (str "a and b not the same at " (+ x 2) " a= " (get a x) " and b = " (nth b x))))))
  (tests 
-  (subvec (vec (m-series 100)) 2) := (v4/seq-of-smallest-m-till-p 100))
+  (subvec (vec (m-series 100)) 2) := (v4/seq-of-smallest-m-till 100))
 
 (defn sum-of-m-series [to-n]
   (let [m-series (m-series to-n)]

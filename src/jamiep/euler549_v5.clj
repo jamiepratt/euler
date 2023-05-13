@@ -83,14 +83,14 @@
 (tests
  (sieve-ff 7) := [2 3 4 5 3 7]
  (sieve-ff 16) := [2 3 4 5 3 7 4 6 5 11 4 13 7 5 6]
- (sieve-ff 30) := (v4/seq-of-smallest-m-till-p 30)
- (sieve-ff 100) := (v4/seq-of-smallest-m-till-p 100)
+ (sieve-ff 30) := (v4/seq-of-smallest-m-till 30)
+ (sieve-ff 100) := (v4/seq-of-smallest-m-till 100)
  )
 
 (defn -main [& args]
   (doall (map #(let [p (int (Math/pow 10 %))]
                  (println "sum of prime factor series to " p)
-                 (println (time (apply + (v4/seq-of-smallest-m-till-p p))))
+                 (println (time (apply + (v4/seq-of-smallest-m-till p))))
                  (println (time (apply + (sieve-ff p)))))
               (range 2 8))))
 
