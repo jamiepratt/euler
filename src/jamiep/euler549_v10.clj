@@ -1,10 +1,10 @@
 (ns jamiep.euler549-v10
   (:require [hyperfiddle.rcf :refer [tests]]))
 
-(defn seq-of-single-prime-factors-for-all-int-to [max-n]
+(defn seq-of-largest-prime-factors-for-all-int-to [max-n]
   (loop [pfs (transient (into [] (range 0 (inc max-n))))
          n 2]
-    (if (<= (Math/pow n 2) max-n)
+    (if (<= n max-n)
       (let [new-pfs
             (if (= n (get pfs n))
               (reduce #(assoc! %1 %2 n)
@@ -14,8 +14,8 @@
         (recur new-pfs (inc n)))
       (persistent! pfs))))
 
-(tests (seq-of-single-prime-factors-for-all-int-to 10)
-       := [0 1 2 3 2 5 3 7 2 3 2])
+(tests (seq-of-largest-prime-factors-for-all-int-to 10)
+       := [0 1 2 3 2 5 3 7 2 3 5])
 
 (defn next-integer-with-factor [factor x]
   (+ x (- factor (mod x factor))))
@@ -51,7 +51,7 @@
     (next-integer-with-factor p prev-m)))
 
 (defn seq-of-smallest-m-till [q]
-  (let [pfs (seq-of-single-prime-factors-for-all-int-to q)]
+  (let [pfs (seq-of-largest-prime-factors-for-all-int-to q)]
     (persistent!
      (reduce
       (fn [s x]
@@ -59,7 +59,9 @@
           (if (= p x)
             (conj! s p) ; prime so m = p
             (let [prev-m (get s (quot x p))]
-              (conj! s (smallest-m-where-x-divides-m! prev-m p x))))))
+              (if (< prev-m p)
+                (conj! s p)
+                (conj! s (smallest-m-where-x-divides-m! prev-m p x)))))))
       (transient [0 0])
       (range 2 (inc q))))))
 
