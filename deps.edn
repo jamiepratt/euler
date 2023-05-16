@@ -7,4 +7,5 @@
   :portal {:extra-deps {djblue/portal {:mvn/version "RELEASE"}}}
 ;;   :criterium {:extra-deps {criterium/criterium {:mvn/version "0.4.6"}}
 ;;               :extra-paths ["dev"]}
+  :decompile {:extra-deps {com.clojure-goes-fast/clj-java-decompiler {:mvn/version "0.3.4"}}}
   }}
