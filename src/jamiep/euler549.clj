@@ -1,51 +1,6 @@
 (ns jamiep.euler549
   (:require [hyperfiddle.rcf :refer [tests]]))
 
-(defn factorial [n]
-  (reduce *' (range 1 (inc n))))
-
-(defn smallest-m-series-sieve' [n]
-  (loop [nums {}
-         i 2]
-    (cond
-      (> i n) nums
-      :else (recur (conj nums [i (range (* i 2)
-                                        (min n (inc (factorial i)))
-                                        i)])
-                            (inc i))
-      )))
-
-(comment (smallest-m-series-sieve' 100))
-
-
-
-(defn smallest-m-series-sieve [n]
-  (loop [nums (transient (vec (range n)))
-         i 2]
-    (cond
-      (> i n) (nnext (persistent! nums))
-      (= i (nums i)) (recur (reduce #(assoc! %1 %2 i) nums
-                              (range (* i 2)
-                                     (min n (inc (factorial i)))
-                                     i))
-                      (inc i))
-      :else (recur nums (inc i)))))
-
-(defn smallest-m-naive
-  "Brute force search for the smallest number m such that n divides m!"
-  [n]
-  (first (filter #(zero? (rem (factorial %) n)) (range (inc n)))))
-
-(defn smallest-m-series-naive [n]
-  (map smallest-m-naive (range 2 n)))
-
-(tests
- (smallest-m-series-sieve 10) := (smallest-m-series-naive 10)
-
- (smallest-m-series-sieve 20) := (smallest-m-series-naive 20)
- )
-
-(comment (smallest-m-naive 10))
 ;; The smallest number m such that 10 divides m! is m=5.
 
 ; because 5! = 5 * 4 * 3 * 2 * 1
@@ -70,4 +25,21 @@
 ;; Let S (n) be ∑s (i) for 2 ≤ i ≤ n.
 ;; S (100) =2012.
 
-;; Find S (10^8) .
+;; Find S (10^8).
+
+
+(defn factorial [n]
+  (reduce *' (range 1 (inc n))))
+
+(defn smallest-m-naive
+  "Brute force search for the smallest number m such that n divides m!"
+  [n]
+  (first (filter #(zero? (rem (factorial %) n)) (range (inc n)))))
+
+(defn smallest-m-series-naive [n]
+  (mapv smallest-m-naive (range 2 (inc n))))
+
+(tests
+ [2 3 4 5 3 7 4 6 5] := (smallest-m-series-naive 10)
+ )
+

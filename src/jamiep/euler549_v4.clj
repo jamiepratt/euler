@@ -44,17 +44,19 @@
 (defn smallest-m-for-primes [f-pf-n]
   (apply max (map (fn [[factor freq]] (smallest-m-for-power-of-factor factor freq)) f-pf-n)))
 
-(defn transduce-pfs-to-smallest-m-till [p]
+(defn pfs-to-smallest-m-till [p]
   (let [pfs (a-prime-factor-for-all-to p)]
     (map (comp smallest-m-for-primes frequencies (partial prime-factors-of pfs)))))
 
 (defn seq-of-smallest-m-till [p]
-  (transduce (transduce-pfs-to-smallest-m-till p) conj (range 2 (inc p))))
+  (transduce (pfs-to-smallest-m-till p) conj (range 2 (inc p))))
 
 (defn sum-of-smallest-m-till [p]
-  (transduce (transduce-pfs-to-smallest-m-till p) + (range 2 (inc p))))
+  (transduce (pfs-to-smallest-m-till p) + (range 2 (inc p))))
 
-(tests (sum-of-smallest-m-till 100) := 2012)
+(tests
+ (seq-of-smallest-m-till 10) := [2 3 4 5 3 7 4 6 5]
+ (sum-of-smallest-m-till 100) := 2012)
 
 (defn -main [& _args]
   (doall (map #(let [n-to %

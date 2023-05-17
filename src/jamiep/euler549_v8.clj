@@ -1,7 +1,8 @@
 (ns jamiep.euler549-v8
   (:require [hyperfiddle.rcf :refer [tests]]
-            [portal.console :as c]
             [jamiep.euler549-v4 :as v4]))
+
+;not working
 
 (defn factorial
   "n!"
