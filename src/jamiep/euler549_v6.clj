@@ -83,7 +83,7 @@
  (map #(least-m {11 %}) (range 1 10)) := '(11 22 33 44 55 66 77 88 99))
 
 
-(defn least-m-to [^long n]
+(defn smallest-m-to [^long n]
   (let [primes (a-prime-factor-to n)]
     (loop [i 2
            series (int-array (dec n) 1)]
@@ -93,12 +93,18 @@
         series))))
 
 (tests
- (apply + (least-m-to 100)) := 2012
- (vec (least-m-to 20)) := [2, 3, 4, 5, 3, 7, 4, 6, 5, 11, 4, 13, 7, 5, 6, 17, 6, 19, 5]
- (count (least-m-to 20)) := 19
- (drop 19 (vec (least-m-to 40))) := [7 11 23 4 10 13 9 7 29 5 31 8 11 17 7 6 37 19 13 5]
- (drop 39 (vec (least-m-to 60))) := [41 7 43 11 6 23 47 6 14 10 17 13 53 9 11 7 19 29 59 5]
- (drop 59 (vec (least-m-to 80))) := '(61 31 7 8 13 11 67 17 23 7 71 6 73 37 10 19 11 13 79 6)
- (vec (least-m-to 200)) := (v4/seq-of-smallest-m-till 200)
+ (apply + (smallest-m-to 100)) := 2012
+ (vec (smallest-m-to 20)) := [2, 3, 4, 5, 3, 7, 4, 6, 5, 11, 4, 13, 7, 5, 6, 17, 6, 19, 5]
+ (count (smallest-m-to 20)) := 19
+ (drop 19 (vec (smallest-m-to 40))) := [7 11 23 4 10 13 9 7 29 5 31 8 11 17 7 6 37 19 13 5]
+ (drop 39 (vec (smallest-m-to 60))) := [41 7 43 11 6 23 47 6 14 10 17 13 53 9 11 7 19 29 59 5]
+ (drop 59 (vec (smallest-m-to 80))) := '(61 31 7 8 13 11 67 17 23 7 71 6 73 37 10 19 11 13 79 6)
+ (vec (smallest-m-to 200)) := (v4/seq-of-smallest-m-till 200)
  )
-nil
+
+
+(defn sum-of-smallest-m-till [n]
+  (reduce + (smallest-m-to n)))
+
+(tests
+ (sum-of-smallest-m-till 100) := 2012)

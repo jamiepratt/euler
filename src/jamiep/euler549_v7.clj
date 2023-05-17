@@ -144,7 +144,7 @@
 (next-prime-series m-series n *1 23) := [23]
 (vec m-series) := [0 0 2 3 4 5 3 7 4 6 5 11 4 13 7 5 6 17 6 19 5 7 11 23 4 10])
 
-(defn sieve-ff
+(defn sum-of-smallest-m-till
   "Find the smallest m for all integers up to to-n."
   [to-n]
   (let [n (inc to-n)
@@ -163,8 +163,8 @@
         (reduce #(+ %1 (aget m-series %2)) 0 (range 2 n))))))
 
 (tests
- (sieve-ff 2) := 2
- (sieve-ff 3) := 5
- (sieve-ff 25) := 187
- (sieve-ff 100) := 2012)
+ (sum-of-smallest-m-till 2) := 2
+ (sum-of-smallest-m-till 3) := 5
+ (sum-of-smallest-m-till 25) := 187
+ (sum-of-smallest-m-till 100) := 2012)
 

@@ -54,7 +54,7 @@
     prev-m
     (next-integer-with-factor p prev-m)))
 
-(defn array-of-smallest-m-till' [^long q]
+(defn array-of-smallest-m-till [^long q]
   (let [^ints pfs (array-of-largest-prime-factors-for-all-int-to q)
         s (int-array (inc q))] ; initialised to zero by default
     (loop [x 2]
@@ -69,37 +69,12 @@
           (recur (inc x)))
         s))))
 
-;; (defn array-of-smallest-m-till [q]
-;;   (let [pfs (array-of-largest-prime-factors-for-all-int-to q)]
-;;     (persistent!
-;;      (reduce
-;;       (fn [s x]
-;;         (let [p (get pfs x)]
-;;           (if (= p x)
-;;             (conj! s p) ; prime so m = p
-;;             (let [prev-m (get s (quot x p))]
-;;               (if (< prev-m p)
-;;                 (conj! s p)
-;;                 (conj! s (smallest-m-where-x-divides-m! prev-m p x)))))))
-;;       (transient [0 0])
-;;       (range 2 (inc q))))))
-
-;; (tests
-;;  (vec (array-of-smallest-m-till 10)) := [0 0 2 3 4 5 3 7 4 6 5])
-
-(defn sum-of-smallest-m-till' [^long q]
-  (let [^ints s (array-of-smallest-m-till' q)]
+(defn sum-of-smallest-m-till [^long q]
+  (let [^ints s (array-of-smallest-m-till q)]
     (loop [x 2
            sum 0]
       (if (<= x q)
         (recur (inc x) (+ (aget s x) sum))
         sum))))
 
-;; (defn sum-of-smallest-m-till [q]
-;;   (let [s (array-of-smallest-m-till q)]
-;;     (apply + s)))
-
-
-;; (tests (sum-of-smallest-m-till 100) := 2012)
-
-(tests (sum-of-smallest-m-till' 100) := 2012)
+(tests (sum-of-smallest-m-till 100) := 2012)

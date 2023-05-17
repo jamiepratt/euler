@@ -85,7 +85,14 @@
  (sieve-ff 16) := [2 3 4 5 3 7 4 6 5 11 4 13 7 5 6]
  (sieve-ff 30) := (v4/seq-of-smallest-m-till 30)
  (sieve-ff 100) := (v4/seq-of-smallest-m-till 100)
+ 
  )
+
+
+(defn sum-of-smallest-m-till [n]
+  (reduce + (sieve-ff n)))
+
+(tests (sum-of-smallest-m-till 100) := 2012)
 
 (defn -main [& args]
   (doall (map #(let [p (int (Math/pow 10 %))]
