@@ -12,16 +12,20 @@ test_bed.clj is incomplete but is intended to run all the versions of the code a
 
 For series to 100 for example
 
-first prime is 2
-3 is prime
-Therefor 3* 2 is not prime
-3*2*2 is not prime
-etc. for all combinations of factors of 2 and 3 up to 100.
-So we already know 4 is not prime but
-5 is prime. 
-Therefore 2*5 is not prime
-2*2*5 .... We then iterate through combinations of all primes we know of saw far plus at least one factor of 5. etc. We will iterate through all integers just once since each unique combination of powers of primes is a different integer.
+- first prime is 2
+- 3 is prime
+- Therefor 3 * 2 is not prime
+- 3 * 2 * 2 is not prime
+- etc. for all combinations of factors of 2 and 3 up to 100.
+- So we already know 4 is not prime but
+- 5 is prime. 
+- Therefore 2 * 5 is not prime
+- 2 * 2 * 5 ....
+- We then iterate through combinations of all primes we know of saw far plus at least one factor of 5. etc.
+- And on to 7 because we have already found 6 is not prime.
+- We will iterate through all integers just once since each unique combination of powers of primes is a different integer.
+- Etc.
 
 An advantage of doing the sieve this way is that we can easily calculate the smallest-m as we go along. Since for each step of the iteration we know the smallest m for the product of a previous combination of primes and are multiplying that by another prime, smallest m for this new product is easy to calculate as I have done in version 10 of my code.
 
-The problem is that for a very long series of primes already discovered we may need to keep track of how many powers of each prime we have iterated through.
+The problem is that for a very long series of primes already discovered we may need to keep track of how many powers of each prime we have iterated through. This might be solved by just keeping track of the product and what prime to multiply by next or something like that.
