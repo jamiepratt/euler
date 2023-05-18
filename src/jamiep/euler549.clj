@@ -36,10 +36,10 @@
   [n]
   (first (filter #(zero? (rem (factorial %) n)) (range (inc n)))))
 
-(defn smallest-m-series-naive [n]
+(defn sum-of-smallest-m-till [n]
   (mapv smallest-m-naive (range 2 (inc n))))
 
 (tests
- [2 3 4 5 3 7 4 6 5] := (smallest-m-series-naive 10)
+ [2 3 4 5 3 7 4 6 5] := (sum-of-smallest-m-till 10)
  )
 

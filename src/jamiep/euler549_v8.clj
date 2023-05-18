@@ -156,16 +156,16 @@
  (tests 
   (subvec (vec (m-series 100)) 2) := (v4/seq-of-smallest-m-till 100))
 
-(defn sum-of-m-series [to-n]
+(defn sum-of-smallest-m-till [to-n]
   (let [m-series (m-series to-n)]
     (areduce m-series i ret 0
                    (+ ret (aget m-series i)))))
 
 (tests
- (sum-of-m-series 2) := 2
- (sum-of-m-series 3) := 5
- (sum-of-m-series 25) := 187
- (sum-of-m-series 100) := 2012)
+ (sum-of-smallest-m-till 2) := 2
+ (sum-of-smallest-m-till 3) := 5
+ (sum-of-smallest-m-till 25) := 187
+ (sum-of-smallest-m-till 100) := 2012)
 
 ;; (defn- next-prime-series
 ;;   "Given a boolean matrix take all the indexes where the value is true 
