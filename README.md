@@ -12,19 +12,10 @@ test_bed.clj is incomplete but is intended to run all the versions of the code a
 
 For series to 100 for example
 
-- first prime is 2
-- 3 is prime
-- Therefor 3 * 2 is not prime
-- 3 * 2 * 2 is not prime
-- etc. for all combinations of factors of 2 and 3 up to 100.
-- So we already know 4 is not prime but
-- 5 is prime. 
-- Therefore 2 * 5 is not prime
-- 2 * 2 * 5 ....
-- We then iterate through combinations of all primes we know of saw far plus at least one factor of 5. etc.
-- And on to 7 because we have already found 6 is not prime.
-- We will iterate through all integers just once since each unique combination of powers of primes is a different integer.
-- Etc.
+1. Start with n is 2 and least-m-series is a range from 0 to max-m + 1 ie. start with same value in all cells as the key for that cell.
+2. We test if n is prime if the value in the least-m-series is still the same as the key then m is prime (excpeot for 4 which we ignore). If n is not prime then repeat this step incrementing n until we find a prime.
+3. If n is prime we iterate through the product of all combination of prime n with all previously discovered primes (always with at least one or more powers of the new prime). We calculate least-m for each of these products and store in least-m-series. For products up to a maximum of max-m
+4. If have not iterated n up to max-n then go back to step 2.
 
 An advantage of doing the sieve this way is that we can easily calculate the smallest-m as we go along. Since for each step of the iteration we know the smallest m for the product of a previous combination of primes and are multiplying that by another prime, smallest m for this new product is easy to calculate as I have done in version 10 of my code.
 
